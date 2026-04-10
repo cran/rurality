@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Getting Started with rurality</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Getting Started with rurality</h1>
+
+
+
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>The <code>rurality</code> package provides rurality classification
+data for all U.S. counties and ZIP codes. It bundles USDA Rural-Urban
+Continuum Codes (RUCC 2023), Rural-Urban Commuting Area codes (RUCA
+2020), and a composite rurality score that combines multiple data
+sources into a single 0–100 measure.</p>
+<p>The package is designed for researchers who need to classify
+locations by rurality without manually downloading and reshaping USDA
+spreadsheets.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(rurality)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co">#&gt; Attaching package: &#39;dplyr&#39;</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#&gt; The following objects are masked from &#39;package:stats&#39;:</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co">#&gt;     filter, lag</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co">#&gt; The following objects are masked from &#39;package:base&#39;:</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span></code></pre></div>
+</div>
+<div id="looking-up-a-county" class="section level2">
+<h2>Looking up a county</h2>
+<p>The simplest use case is looking up rurality data for a county by its
+5-digit FIPS code:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">get_rurality</span>(<span class="st">&quot;05031&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 24</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#&gt;   fips  state_fips county_fips state_abbr county_name      pop_2020 acs_pop</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;               &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt; 1 05031 05         031         AR         Craighead County   111231  111038</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt; # ℹ 17 more variables: land_area_sqmi &lt;dbl&gt;, pop_density &lt;dbl&gt;,</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#&gt; #   rucc_2023 &lt;int&gt;, rucc_description &lt;chr&gt;, omb_designation &lt;chr&gt;, lat &lt;dbl&gt;,</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt; #   lng &lt;dbl&gt;, dist_large_metro &lt;dbl&gt;, dist_medium_metro &lt;dbl&gt;,</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt; #   dist_small_metro &lt;dbl&gt;, rucc_score &lt;dbl&gt;, density_score &lt;dbl&gt;,</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#&gt; #   distance_score &lt;dbl&gt;, rurality_score &lt;dbl&gt;, rurality_classification &lt;chr&gt;,</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt; #   median_income &lt;dbl&gt;, median_age &lt;dbl&gt;</span></span></code></pre></div>
+<p>If you just need the score or the RUCC code:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">rurality_score</span>(<span class="st">&quot;05031&quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#&gt;  3 </span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt; 40</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="fu">get_rucc</span>(<span class="st">&quot;05031&quot;</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; [1] 3</span></span></code></pre></div>
+<p>Multiple FIPS codes work too:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">rurality_score</span>(<span class="fu">c</span>(<span class="st">&quot;05031&quot;</span>, <span class="st">&quot;06037&quot;</span>, <span class="st">&quot;48453&quot;</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt;  3  1  1 </span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; 40 17 23</span></span></code></pre></div>
+</div>
+<div id="looking-up-a-zip-code" class="section level2">
+<h2>Looking up a ZIP code</h2>
+<p>RUCA codes are available at the ZIP/ZCTA level:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">get_ruca</span>(<span class="st">&quot;72401&quot;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 4</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt;   zip   state primary_ruca secondary_ruca</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;        &lt;int&gt;          &lt;int&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; 1 72401 AR               1              1</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="fu">get_ruca</span>(<span class="fu">c</span>(<span class="st">&quot;72401&quot;</span>, <span class="st">&quot;90210&quot;</span>, <span class="st">&quot;59801&quot;</span>))</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 4</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt;   zip   state primary_ruca secondary_ruca</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;        &lt;int&gt;          &lt;int&gt;</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; 1 59801 MT               1              1</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; 2 72401 AR               1              1</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; 3 90210 CA               1              1</span></span></code></pre></div>
+</div>
+<div id="merging-onto-your-data" class="section level2">
+<h2>Merging onto your data</h2>
+<p>The most common research workflow is merging rurality data onto an
+existing dataset. The <code>add_rurality()</code> function handles
+this:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="at">fips =</span> <span class="fu">c</span>(<span class="st">&quot;05031&quot;</span>, <span class="st">&quot;06037&quot;</span>, <span class="st">&quot;48453&quot;</span>, <span class="st">&quot;30063&quot;</span>),</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="at">outcome =</span> <span class="fu">c</span>(<span class="fl">0.72</span>, <span class="fl">0.41</span>, <span class="fl">0.58</span>, <span class="fl">0.89</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>)</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>my_data <span class="sc">|&gt;</span> <span class="fu">add_rurality</span>()</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt;    fips outcome rurality_score rurality_classification rucc_2023</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt; 1 05031    0.72             40                   Mixed         3</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt; 2 06037    0.41             17                   Urban         1</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt; 3 48453    0.58             23                Suburban         1</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; 4 30063    0.89             45                   Mixed         3</span></span></code></pre></div>
+<p>By default, three columns are added: <code>rurality_score</code>,
+<code>rurality_classification</code>, and <code>rucc_2023</code>. Use
+<code>vars = &quot;all&quot;</code> for the full set:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>my_data <span class="sc">|&gt;</span> <span class="fu">add_rurality</span>(<span class="at">vars =</span> <span class="st">&quot;all&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt; Rows: 4</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co">#&gt; Columns: 25</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt; $ fips                    &lt;chr&gt; &quot;05031&quot;, &quot;06037&quot;, &quot;48453&quot;, &quot;30063&quot;</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt; $ outcome                 &lt;dbl&gt; 0.72, 0.41, 0.58, 0.89</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; $ state_fips              &lt;chr&gt; &quot;05&quot;, &quot;06&quot;, &quot;48&quot;, &quot;30&quot;</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt; $ county_fips             &lt;chr&gt; &quot;031&quot;, &quot;037&quot;, &quot;453&quot;, &quot;063&quot;</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; $ state_abbr              &lt;chr&gt; &quot;AR&quot;, &quot;CA&quot;, &quot;TX&quot;, &quot;MT&quot;</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt; $ county_name             &lt;chr&gt; &quot;Craighead County&quot;, &quot;Los Angeles County&quot;, &quot;Tra…</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt; $ pop_2020                &lt;dbl&gt; 111231, 10014009, 1290188, 117922</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt; $ acs_pop                 &lt;dbl&gt; 111038, 9936690, 1289054, 118541</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt; $ land_area_sqmi          &lt;dbl&gt; 707.1583, 4059.2816, 994.0526, 2593.0085</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt; $ pop_density             &lt;dbl&gt; 157.0, 2447.9, 1296.8, 45.7</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt; $ rucc_2023               &lt;int&gt; 3, 1, 1, 3</span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt; $ rucc_description        &lt;chr&gt; &quot;Metro - Counties in metro areas of fewer than…</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt; $ omb_designation         &lt;chr&gt; &quot;Metropolitan&quot;, &quot;Metropolitan&quot;, &quot;Metropolitan&quot;…</span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="co">#&gt; $ lat                     &lt;dbl&gt; 35.83091, 34.32080, 30.33436, 47.03601</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="co">#&gt; $ lng                     &lt;dbl&gt; -90.63290, -118.22485, -97.78182, -113.92470</span></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="co">#&gt; $ dist_large_metro        &lt;dbl&gt; 382.3440, 18.5902, 149.6074, 395.5553</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="co">#&gt; $ dist_medium_metro       &lt;dbl&gt; 119.7631, 188.6871, 441.7468, 169.4502</span></span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a><span class="co">#&gt; $ dist_small_metro        &lt;dbl&gt; 4.076085, 377.962597, 558.870426, 11.787297</span></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="co">#&gt; $ rucc_score              &lt;dbl&gt; 28, 8, 8, 28</span></span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="co">#&gt; $ density_score           &lt;dbl&gt; 45, 15, 22, 59</span></span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a><span class="co">#&gt; $ distance_score          &lt;dbl&gt; 69, 51, 75, 78</span></span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="co">#&gt; $ rurality_score          &lt;dbl&gt; 40, 17, 23, 45</span></span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a><span class="co">#&gt; $ rurality_classification &lt;chr&gt; &quot;Mixed&quot;, &quot;Urban&quot;, &quot;Suburban&quot;, &quot;Mixed&quot;</span></span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a><span class="co">#&gt; $ median_income           &lt;dbl&gt; 55169, 83411, 92731, 66840</span></span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a><span class="co">#&gt; $ median_age              &lt;dbl&gt; 34.4, 37.4, 35.1, 36.7</span></span></code></pre></div>
+<p>If your FIPS column has a different name, specify it:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>other_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">county_fips =</span> <span class="fu">c</span>(<span class="st">&quot;05031&quot;</span>, <span class="st">&quot;06037&quot;</span>), <span class="at">y =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>other_data <span class="sc">|&gt;</span> <span class="fu">add_rurality</span>(<span class="at">fips_col =</span> <span class="st">&quot;county_fips&quot;</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt;   county_fips y rurality_score rurality_classification rucc_2023</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt; 1       05031 1             40                   Mixed         3</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; 2       06037 2             17                   Urban         1</span></span></code></pre></div>
+</div>
+<div id="classifying-scores" class="section level2">
+<h2>Classifying scores</h2>
+<p>The <code>classify_rurality()</code> function converts numeric scores
+to labels:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">classify_rurality</span>(<span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">30</span>, <span class="dv">50</span>, <span class="dv">70</span>, <span class="dv">90</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Urban&quot;      &quot;Suburban&quot;   &quot;Mixed&quot;      &quot;Rural&quot;      &quot;Very Rural&quot;</span></span></code></pre></div>
+<p>The thresholds are:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Score</th>
+<th>Classification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>80–100</td>
+<td>Very Rural</td>
+</tr>
+<tr class="even">
+<td>60–79</td>
+<td>Rural</td>
+</tr>
+<tr class="odd">
+<td>40–59</td>
+<td>Mixed</td>
+</tr>
+<tr class="even">
+<td>20–39</td>
+<td>Suburban</td>
+</tr>
+<tr class="odd">
+<td>0–19</td>
+<td>Urban</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="browsing-the-full-dataset" class="section level2">
+<h2>Browsing the full dataset</h2>
+<p>The <code>county_rurality</code> dataset contains all 3,235 U.S.
+counties:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>county_rurality</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3,235 × 24</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co">#&gt;    fips  state_fips county_fips state_abbr county_name     pop_2020 acs_pop</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;              &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#&gt;  1 01001 01         001         AL         Autauga County     58805   58761</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#&gt;  2 01003 01         003         AL         Baldwin County    231767  233420</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co">#&gt;  3 01005 01         005         AL         Barbour County     25223   24877</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co">#&gt;  4 01007 01         007         AL         Bibb County        22293   22251</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="co">#&gt;  5 01009 01         009         AL         Blount County      59134   59077</span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="co">#&gt;  6 01011 01         011         AL         Bullock County     10357   10328</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="co">#&gt;  7 01013 01         013         AL         Butler County      19051   18981</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="co">#&gt;  8 01015 01         015         AL         Calhoun County    116441  116162</span></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="co">#&gt;  9 01017 01         017         AL         Chambers County    34772   34612</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="co">#&gt; 10 01019 01         019         AL         Cherokee County    24971   25069</span></span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="co">#&gt; # ℹ 3,225 more rows</span></span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="co">#&gt; # ℹ 17 more variables: land_area_sqmi &lt;dbl&gt;, pop_density &lt;dbl&gt;,</span></span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="co">#&gt; #   rucc_2023 &lt;int&gt;, rucc_description &lt;chr&gt;, omb_designation &lt;chr&gt;, lat &lt;dbl&gt;,</span></span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="co">#&gt; #   lng &lt;dbl&gt;, dist_large_metro &lt;dbl&gt;, dist_medium_metro &lt;dbl&gt;,</span></span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="co">#&gt; #   dist_small_metro &lt;dbl&gt;, rucc_score &lt;dbl&gt;, density_score &lt;dbl&gt;,</span></span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="co">#&gt; #   distance_score &lt;dbl&gt;, rurality_score &lt;dbl&gt;, rurality_classification &lt;chr&gt;,</span></span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="co">#&gt; #   median_income &lt;dbl&gt;, median_age &lt;dbl&gt;</span></span></code></pre></div>
+<p>Filter to a state:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>county_rurality <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>  <span class="fu">filter</span>(state_abbr <span class="sc">==</span> <span class="st">&quot;AR&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>  <span class="fu">select</span>(county_name, rurality_score, rurality_classification, rucc_2023) <span class="sc">|&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(rurality_score)) <span class="sc">|&gt;</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt; # A tibble: 10 × 4</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt;    county_name    rurality_score rurality_classification rucc_2023</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;                   &lt;dbl&gt; &lt;chr&gt;                       &lt;int&gt;</span></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="co">#&gt;  1 Calhoun County             85 Very Rural                      9</span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co">#&gt;  2 Chicot County              85 Very Rural                      9</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="co">#&gt;  3 Newton County              85 Very Rural                      9</span></span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="co">#&gt;  4 Searcy County              85 Very Rural                      9</span></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="co">#&gt;  5 Desha County               84 Very Rural                      9</span></span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co">#&gt;  6 Fulton County              84 Very Rural                      9</span></span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a><span class="co">#&gt;  7 Monroe County              84 Very Rural                      9</span></span>
+<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a><span class="co">#&gt;  8 Clay County                83 Very Rural                      9</span></span>
+<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a><span class="co">#&gt;  9 Lincoln County             83 Very Rural                      9</span></span>
+<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a><span class="co">#&gt; 10 Marion County              83 Very Rural                      9</span></span></code></pre></div>
+</div>
+<div id="score-distribution" class="section level2">
+<h2>Score distribution</h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">requireNamespace</span>(<span class="st">&quot;ggplot2&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(county_rurality, ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> rurality_score)) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">fill =</span> <span class="st">&quot;#15803d&quot;</span>, <span class="at">color =</span> <span class="st">&quot;white&quot;</span>) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">labs</span>(</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">&quot;Distribution of Rurality Scores Across U.S. Counties&quot;</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">&quot;Rurality Score (0-100)&quot;</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">&quot;Number of Counties&quot;</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">theme_minimal</span>()</span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>}</span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co">#&gt; Warning: Removed 22 rows containing non-finite outside the scale range</span></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt; (`stat_bin()`).</span></span></code></pre></div>
+<p><img role="img" src="data:image/png;base64,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22+/feKva9eu3r9x48aBe4GkvDefnq7zD37xi18kkkjmnKouEoFrefDcc88FHTt29O149913D37+858HLVu29OV3QmOwePHiWsZYHMGPPfbYoFmzZv5v7ty5xZHpWuQybNtLlixJeZcTfnwdP/XUUymvh575ah8rVqzwbU19aOvWrYN99tkncMKPz5P7cAycUBRmocF+Uz1nyc9ig2WOhIuOgBVdjjNkOBSAzj///Gqh1qxZEzz00ENeEOrWrVsQ7VynTZsWuK+pauGznZx55plBkyZNsgULFi1aFLz77rvBsmXLfNhcC0Cp8lGX8mQtSA4C3HDDDb4jdVqwjLGle0lUVVUFuveHP/xh4DQgwZw5czLGk+uLyQJQMudUdVHXPEhIlADvND+JKJYvXx64L13P8NJLL034l8rB0qVLvcA3fPhw/2xdccUVpVK0RDnSte0wQFwBKB/tY9WqVcG+++4b6APDaWkDCUOh+/TTT4P111/fP3uVlZWhd4P8pnrOkp/FBskYiRYlgbKwAXIPtR166KHmvpzMCT92+umnJ/R0bdq0sVatWiXOdeC+0OzVV1+1559/3mbNmlXtmu53X+Deb8aMGbZw4UJ//NVXX/lj15Hbiy++6OPQcFu7du1M6Sc73TdhwgT78MMPzb3cq11WHIpb6uiocwKV95dfunykKo/Cf/311748Um+7TkxeCadzpedasK1cudKcdsb/OcEtESbbgetAbcqUKfbMM88k8hjeIzZffvmlPxUTndfWadjHaYR83SmfYicXh5XCRcv4/vvv23vvvSfvhFO55e++vv2wU7ayRzmnqgv5ffHFF4n4owczZ840qfFTOSfE+/ucNsScFigRREOAw4YNsx49evg8Ji7870D8X3vtNfv888+TLyXOM7UBBUrVhsOb165da//5z3/s2WefrVG/YRj9upeRz5/aghPaopcyHjttqX9mfv3rX9vPfvYzP3Sc/FxEI0hX3mz1nKmdRuPPVo5MfUQ0nlwf17V9ZMvHzTffbE8++aRdfPHF9qtf/araEN0mm2xi7gPGPvnkE/vjH/9YLapsPOM+n2HbU+TqK9RXq0+KulTPma5Hn8VoeA0dqy92GnhL9zxnq+dofByXIIGiFNvSZDqdBigafLfddqs2fJWsPtWwlRNa/Je2voZclQdDhgwJ5s+f76M54IADvJ/89ede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" /><!-- --></p>
+</div>
+<div id="methodology" class="section level2">
+<h2>Methodology</h2>
+<p>The composite rurality score is a weighted average of three
+components:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>Weight</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>RUCC score</td>
+<td>55%</td>
+<td>USDA Economic Research Service, 2023</td>
+</tr>
+<tr class="even">
+<td>Population density</td>
+<td>28%</td>
+<td>Census ACS 2022 5-year estimates</td>
+</tr>
+<tr class="odd">
+<td>Distance to metro</td>
+<td>17%</td>
+<td>Haversine distance to nearest metro area</td>
+</tr>
+</tbody>
+</table>
+<p>For full details, see <a href="https://rurality.app">rurality.app</a>.</p>
+</div>
+<div id="citation" class="section level2">
+<h2>Citation</h2>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">&quot;rurality&quot;</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="co">#&gt; To cite package &#39;rurality&#39; in publications use:</span></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="co">#&gt;   Wimpy C (2026). _rurality: Rurality Classification and Scoring for</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="co">#&gt;   U.S. Counties and ZIP Codes_. R package version 0.1.0,</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="co">#&gt;   &lt;https://rurality.app&gt;.</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt;   @Manual{,</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt;     title = {rurality: Rurality Classification and Scoring for U.S. Counties and ZIP Codes},</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co">#&gt;     author = {Cameron Wimpy},</span></span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co">#&gt;     year = {2026},</span></span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="co">#&gt;     url = {https://rurality.app},</span></span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="co">#&gt;     note = {R package version 0.1.0},</span></span>
+<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a><span class="co">#&gt;   }</span></span></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
