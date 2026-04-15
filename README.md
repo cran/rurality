@@ -1,4 +1,13 @@
-# rurality
+# rurality <img src="man/figures/logo.png" align="right" height="139" alt="rurality package hex sticker" />
+
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/rurality)](https://CRAN.R-project.org/package=rurality)
+[![R-CMD-check](https://github.com/cwimpy/rurality/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwimpy/rurality/actions/workflows/R-CMD-check.yaml)
+[![pkgdown](https://github.com/cwimpy/rurality/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/cwimpy/rurality/actions/workflows/pkgdown.yaml)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+<!-- badges: end -->
+
+**Documentation:** https://cwimpy.github.io/rurality/
 
 Rurality classification and scoring for U.S. counties and ZIP codes.
 
@@ -7,6 +16,12 @@ Provides USDA Rural-Urban Continuum Codes (RUCC 2023), Rural-Urban Commuting Are
 **Web app:** [rurality.app](https://rurality.app)
 
 ## Install
+
+```r
+install.packages("rurality")
+```
+
+Or install the development version from GitHub:
 
 ```r
 # install.packages("devtools")
